@@ -41,3 +41,4 @@ jspm_packages
 .next
 client/yarn.lock
 server/yarn.lock
+server/package-lock.json
