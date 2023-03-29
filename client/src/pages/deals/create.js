@@ -3,18 +3,16 @@ import Avatar from "@mui/material/Avatar";
 import Button from "@mui/material/Button";
 import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
-import FormControlLabel from "@mui/material/FormControlLabel";
-import Checkbox from "@mui/material/Checkbox";
 import Link from "next/link";
 import Grid from "@mui/material/Grid";
 import Box from "@mui/material/Box";
-import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Head from "next/head";
-import { hiIN } from "@mui/material/locale";
-import { useEffect } from "react";
+
+import { NewReleasesOutlined } from "@mui/icons-material";
 
 function Copyright(props) {
   return (
@@ -41,15 +39,16 @@ export default function SignIn() {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log("SIGNIN", {
-      password: data.get("password"),
-      phone: data.get("phone"),
+      cropname: data.get("cropname"),
+      quantity: data.get("quantity"),
+      closetime: data.get("closetime"),
     });
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Head>
-        <title>YouFarm | Login</title>
+        <title>Create a deal</title>
         <meta name="description" content="Register/ Signup for an account" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -65,10 +64,10 @@ export default function SignIn() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <LockOutlinedIcon />
+            <NewReleasesOutlined />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Register
+            Create a deal
           </Typography>
           <Box
             component="form"
@@ -80,38 +79,41 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="phone"
-              label="Phone"
-              name="phone"
-              autoComplete="phone"
-              type="tel"
+              id="cropname"
+              label="Crop name"
+              name="cropname"
+              autoComplete="text"
+              type="text"
             />
             <TextField
               margin="normal"
               required
               fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
+              id="quantity"
+              label="Quantity"
+              name="quantity"
+              autoComplete="text"
+              type="number"
             />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="closetime"
+              label="Close time"
+              name="closetime"
+              autoComplete="text"
+              type="datetime-local"
+            />
+
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Login
+              Create
             </Button>
-            <Grid container>
-              <Grid item xs />
-              <Grid item>
-                <Link href="/signup" variant="body2">
-                  {"Don't have an account? Sign Up"}
-                </Link>
-              </Grid>
-            </Grid>
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
