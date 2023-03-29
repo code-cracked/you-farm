@@ -40,3 +40,4 @@ jspm_packages
 .node_repl_history
 .next
 client/yarn.lock
+server/yarn.lock
