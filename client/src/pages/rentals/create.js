@@ -12,8 +12,10 @@ import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Head from "next/head";
 
-import { NewReleasesOutlined } from "@mui/icons-material";
-import { InputAdornment } from "@mui/material";
+import {
+  MonetizationOnOutlined,
+  NewReleasesOutlined,
+} from "@mui/icons-material";
 
 function Copyright(props) {
   return (
@@ -35,21 +37,21 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignIn() {
+export default function CreateRental() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     console.log("SIGNIN", {
-      cropname: data.get("cropname"),
-      quantity: data.get("quantity"),
-      closetime: data.get("closetime"),
+      itemname: data.get("itemname"),
+      units: data.get("units"),
+      duration: data.get("duration"),
     });
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Head>
-        <title>Create a deal</title>
+        <title>Create a rental</title>
         <meta name="description" content="Register/ Signup for an account" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -65,10 +67,10 @@ export default function SignIn() {
           }}
         >
           <Avatar sx={{ m: 1, bgcolor: "secondary.main" }}>
-            <NewReleasesOutlined />
+            <MonetizationOnOutlined />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Create a deal
+            Create a rentals
           </Typography>
           <Box
             component="form"
@@ -80,9 +82,9 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="cropname"
-              label="Crop name"
-              name="cropname"
+              id="itemname"
+              label="Item name"
+              name="itemname"
               autoComplete="text"
               type="text"
             />
@@ -90,14 +92,9 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="quantity"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">kg</InputAdornment>
-                ),
-              }}
-              label="Quantity"
-              name="quantity"
+              id="units"
+              label="Units"
+              name="units"
               autoComplete="text"
               type="number"
             />
@@ -105,16 +102,11 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="closetime"
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">Close time</InputAdornment>
-                ),
-              }}
-              // label="Close time"
-              name="closetime"
-              autoComplete="text"
-              type="datetime-local"
+              id="duration"
+              label="Duration (in days)"
+              name="duration"
+              autoComplete="number"
+              type="number"
             />
 
             <Button
