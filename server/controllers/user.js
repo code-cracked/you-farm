@@ -1,6 +1,5 @@
 const asyncHandler = require("express-async-handler");
 const { db } = require("../config/db");
-const { User } = require("../models/user");
 const {
   addDoc,
   collection,
