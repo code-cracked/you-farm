@@ -42,3 +42,9 @@ jspm_packages
 client/yarn.lock
 server/yarn.lock
 server/package-lock.json
+client/package-lock.json
+client/yarn.lock
+
+client/yarn-error.log
+client/yarn.lock
+client/yarn-error.log
