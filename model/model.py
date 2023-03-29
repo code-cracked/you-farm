@@ -1,11 +1,8 @@
 # Simple Linear Regression
 
 # Importing the libraries
-import numpy as np
 import pandas as pd
 import pickle
-import requests
-import json
 
 # Importing the dataset
 dataset = pd.read_csv('data.csv')
