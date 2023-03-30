@@ -17,22 +17,6 @@ export const getUserById = (phno) => {
 };
 
 // Post user to localhost:5000/user
-/*
-{
-"password": "sam",
-"address": "nazareth, TamilNadu, India",
-"role": "farmer",
-"phone": "7395879437",
-"created_on": {
-"seconds": 1680088261,
-"nanoseconds": 849000000
-},
-"location": {
-"lat": "20",
-"long": "20"
-}
-}
-*/
 export const postUser = (user) => {
   return fetch("http://localhost:5000/user", {
     method: "POST",
@@ -42,5 +26,18 @@ export const postUser = (user) => {
     body: JSON.stringify(user),
   }).then((res) => {
     return res;
+  });
+};
+
+// SIgnin user to localhost:5000/user/signin
+export const signInUser = (user) => {
+  return fetch("http://localhost:5000/user/signin", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(user),
+  }).then((res) => {
+    return res.json();
   });
 };

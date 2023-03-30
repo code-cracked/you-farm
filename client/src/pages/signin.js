@@ -16,6 +16,8 @@ import Head from "next/head";
 import { hiIN } from "@mui/material/locale";
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
+import { signInUser } from "@/utils/users";
+import { toast, Toaster } from "react-hot-toast";
 
 function Copyright(props) {
   return (
@@ -43,10 +45,23 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log("SIGNIN", {
+    // console.log("SIGNIN", {
+    //   password: data.get("password"),
+    //   phone: data.get("phone"),
+    // });
+    signInUser({
       password: data.get("password"),
       phone: data.get("phone"),
-    });
+    })
+      .then((res) => {
+        localStorage.setItem("userdata", JSON.stringify(res));
+        toast.success("Login Successful");
+        window.location.href = "/";
+      })
+      .catch((err) => {
+        console.log(err);
+        toast.error("Invalid Credentials");
+      });
   };
 
   return (
@@ -57,6 +72,7 @@ export default function SignIn() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <Toaster />
       <Navbar />
       <Container component="main" maxWidth="xs">
         <CssBaseline />
