@@ -12,33 +12,29 @@ const {
 } = require("firebase/firestore/lite");
 
 const addUser = asyncHandler(async (req, res) => {
-  try {
-    const { phone, password, name, role, latitude, longitude, address } =
-      req.body;
-    const dataRef = {
-      address,
-      name,
-      password,
-      phone,
-      role,
-      location: {
-        latitude,
-        longitude,
-      },
-      created_on: new Date(),
-    };
-    const userRef = collection(db, "users");
-    const docRef = doc(db, "users", phone);
-    const docSnap = await getDoc(docRef);
-    if (docSnap.exists()) {
-      res.status(404).send("User already exists");
-    } else {
-      await setDoc(doc(userRef, phone), dataRef);
-      res.status(200).send(dataRef);
-    }
-  } catch (error) {
-    res.status(400).send(error.message);
+  // try {
+  const { phone, password, name, role, location, address } = req.body;
+  const dataRef = {
+    address,
+    name,
+    password,
+    phone,
+    role,
+    location,
+    created_on: new Date(),
+  };
+  const userRef = collection(db, "users");
+  const docRef = doc(db, "users", phone);
+  const docSnap = await getDoc(docRef);
+  if (docSnap.exists()) {
+    res.status(404).send("User already exists");
+  } else {
+    await setDoc(doc(userRef, phone), dataRef);
+    res.status(200).send(dataRef);
   }
+  // } catch (error) {
+  //   res.status(400).send(error);
+  // }
 });
 
 //not
