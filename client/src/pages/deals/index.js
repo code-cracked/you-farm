@@ -1,6 +1,9 @@
 const { default: Link } = require("next/link");
 
-const Deals = () => {
-  return <Link href={"/deals/create"}>Create a deal</Link>;
+const DealsIndex = () => {
+  <Link href="/deals/create">
+    <a>Create a deal</a>
+  </Link>;
 };
-export default Deals;
+
+export default DealsIndex;
