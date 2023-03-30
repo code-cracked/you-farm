@@ -16,6 +16,7 @@ import Head from "next/head";
 import { hiIN } from "@mui/material/locale";
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
+import { postUser } from "@/utils/users";
 
 function Copyright(props) {
   return (
@@ -67,13 +68,15 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log("SIGNUP", {
-      username: data.get("username"),
+    postUser({
+      name: data.get("username"),
       password: data.get("password"),
       phone: data.get("phone"),
-      city: data.get("city"),
+      address: data.get("city"),
       role: data.get("role"),
-      position: position,
+      location: position,
+    }).then((data) => {
+      console.log(data);
     });
   };
 

@@ -14,19 +14,15 @@ const {
 
 const addUser = asyncHandler(async (req, res) => {
   try {
-    const { phone, password, name, role, latitude, longitude, address } =
-      req.body;
+    const { phone, password, name, role, location, address } = req.body;
     const dataRef = {
       address,
       name,
       password,
       phone,
       role,
-      location: {
-        latitude,
-        longitude,
-      },
-      created_on: Timestamp.fromMillis(Date.parse(new Date())),
+      location,
+      created_on: new Date(),
     };
     const userRef = collection(db, "users");
     const docRef = doc(db, "users", phone);
@@ -38,7 +34,7 @@ const addUser = asyncHandler(async (req, res) => {
       res.status(200).send(dataRef);
     }
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send(error);
   }
 });
 
@@ -81,6 +77,29 @@ const getUser = asyncHandler(async (req, res) => {
   }
 });
 
+const signIn = asyncHandler(async (req, res) => {
+  try {
+    const { phone, password } = req.body;
+    const usersRef = collection(db, "users");
+    const q = query(usersRef, where("phone", "==", phone));
+    const querySnapshot = await getDocs(q);
+    let users = [];
+    querySnapshot.forEach((doc) => {
+      console.log(doc.id, " => ", doc.data());
+      users.push(doc.data());
+    });
+    if (users.length == 0)
+      res.status(404).send("No users found with this phone number");
+    if (users[0].password == password) {
+      res.status(200).send(users[0]);
+    } else {
+      res.status(404).send("Password is incorrect");
+    }
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
 const updateUser = asyncHandler(async (req, res) => {
   try {
     const id = req.params.id;
@@ -109,4 +128,5 @@ module.exports = {
   getUser,
   updateUser,
   deleteUser,
+  signIn,
 };
