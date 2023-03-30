@@ -13,9 +13,11 @@ app.use(bodyParser.json());
 app.use(logHandler);
 
 const config = require("./config/index");
+const { createShow, getAllShows } = require("./controllers/bid");
 
 app.use("/user", userRoutes);
 app.use("/bid", bidRoutes);
+app.route("/deal").get(getAllShows);
 
 app.listen(config.port || 5000, () =>
   console.log(`Up & Running on ${config.url}`)

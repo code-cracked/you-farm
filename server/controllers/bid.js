@@ -34,6 +34,20 @@ const createShow = asyncHandler(async (req, res) => {
   }
 });
 
+const getAllShows = asyncHandler(async (req, res) => {
+  try {
+    const bidShowRef = collection(db, "bidshows");
+    const querySnapshot = await getDocs(bidShowRef);
+    const data = [];
+    querySnapshot.forEach((doc) => {
+      data.push(doc.data());
+    });
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
 const addBid = asyncHandler(async (req, res) => {
   try {
     const { id, phone, name, amount } = req.body;
@@ -107,4 +121,5 @@ module.exports = {
   createShow,
   getBids,
   getAllBids,
+  getAllShows,
 };
