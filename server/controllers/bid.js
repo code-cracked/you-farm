@@ -36,10 +36,10 @@ const createShow = asyncHandler(async (req, res) => {
 
 const addBid = asyncHandler(async (req, res) => {
   try {
-    const { showId, phone, name, amount } = req.body;
+    const { id, phone, name, amount } = req.body;
     const bidRef = collection(db, "bids");
-    const docRef = doc(db, "bids", showId + phone);
-    const createShowDocRef = doc(db, "bidshows", showId);
+    const docRef = doc(db, "bids", id + phone);
+    const createShowDocRef = doc(db, "bidshows", id);
     const dataRef = {
       name: name,
       amount: amount,
@@ -52,7 +52,7 @@ const addBid = asyncHandler(async (req, res) => {
     if (docSnap.exists()) {
       res.status(404).send("User already exists");
     } else {
-      await setDoc(doc(bidRef, showId + phone), dataRef);
+      await setDoc(doc(bidRef, id + phone), dataRef);
       const updates = [];
       await getDoc(createShowDocRef).then((doc) => {
         updates.push(
@@ -63,7 +63,7 @@ const addBid = asyncHandler(async (req, res) => {
       Promise.all(updates, () => {
         console.log("Users updated success");
       });
-      dataRef.bidId = showId;
+      dataRef.bidId = id;
 
       res.status(200).send(dataRef);
     }
@@ -72,7 +72,39 @@ const addBid = asyncHandler(async (req, res) => {
   }
 });
 
+const getBids = asyncHandler(async (req, res) => {
+  try {
+    const { id } = req.params;
+    const bidRef = collection(db, "bids");
+    const q = query(bidRef, where("bidId", "==", id));
+    const querySnapshot = await getDocs(q);
+    const data = [];
+    querySnapshot.forEach((doc) => {
+      data.push(doc.data());
+    });
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+const getAllBids = asyncHandler(async (req, res) => {
+  try {
+    const bidRef = collection(db, "bids");
+    const querySnapshot = await getDocs(bidRef);
+    const data = [];
+    querySnapshot.forEach((doc) => {
+      data.push(doc.data());
+    });
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
 module.exports = {
   addBid,
   createShow,
+  getBids,
+  getAllBids,
 };
