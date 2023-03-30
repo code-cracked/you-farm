@@ -1,15 +1,17 @@
+import { getDealById } from "@/utils/deals";
 import { Container, Stack, Typography } from "@mui/material";
 import { DataGrid } from "@mui/x-data-grid";
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 const { default: Link } = require("next/link");
 
-const product = {
-  title: "Carrots",
-  quantity: "2 kg",
-  close_time: "2 days",
-  owner: "Daniel",
-};
+// const product = {
+//   title: "Carrots",
+//   quantity: "2 kg",
+//   close_time: "2 days",
+//   owner: "Daniel",
+// };
 
 const rows = [
   { id: 1, name: "Hello", bid: "$ 200", distance: "2 km", phno: 98974592739 },
@@ -33,9 +35,27 @@ const columns = [
 
 const Deals = () => {
   const router = useRouter();
-  const { id } = router.query;
+  const { phno } = router.query;
 
-  console.log("GET DEAL DATA", id);
+  const [product, setProduct] = useState({
+    name: "Loading...",
+    createdby: "Loading...",
+    closetime: "Loading...",
+    quantity: "Loading...",
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      let res = await getDealById();
+      console.log("Res", res, phno);
+      res = res.filter((item) => item.createdby == phno);
+      console.log("Uhuhuhu", res);
+      if (res.length > 0) {
+        setProduct(res[0]);
+      }
+    };
+    fetchData();
+  }, [phno]);
 
   return (
     <Container>
@@ -47,8 +67,10 @@ const Deals = () => {
         paddingY={"2rem"}
       >
         <Stack>
-          <Typography variant="h3">{product.title}</Typography>
-          <Typography>By {product.owner}</Typography>
+          <Typography variant="h3" textTransform={"capitalize"}>
+            {product.name}
+          </Typography>
+          <Typography>By {product.createdby}</Typography>
         </Stack>
         <Stack
           direction={"row"}
@@ -56,7 +78,13 @@ const Deals = () => {
           alignItems={"center"}
         >
           <Typography variant="h5">{product.quantity}</Typography>
-          <Typography variant="h6">Closes in {product.close_time}</Typography>
+          <Typography variant="body2">
+            Closes at{" "}
+            {new Date(
+              product.closetime.seconds * 1000 +
+                product.closetime.nanoseconds / 1000000
+            ).toDateString()}
+          </Typography>
         </Stack>
       </Stack>
       <Stack minHeight={"70vh"}>
