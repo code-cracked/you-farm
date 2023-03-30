@@ -22,7 +22,7 @@ const addUser = asyncHandler(async (req, res) => {
       phone,
       role,
       location,
-      created_on: new Date(),
+      created_on: Timestamp.fromMillis(Date.parse(new Date())),
     };
     const userRef = collection(db, "users");
     const docRef = doc(db, "users", phone);
