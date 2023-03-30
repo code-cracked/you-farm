@@ -1,5 +1,11 @@
+import Navbar from "@/components/Navbar";
 import React from "react";
 
 export default function MyApp() {
-  return <div>Hello</div>;
+  return (
+    <>
+      <Navbar />
+      <div>Hello</div>
+    </>
+  );
 }

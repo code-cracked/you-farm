@@ -19,68 +19,40 @@ import Navbar from "@/components/Navbar";
 
 function Copyright(props) {
   return (
-    <Typography
-      variant="body2"
-      color="text.secondary"
-      align="center"
-      {...props}
-    >
-      {"Copyright © "}
-      <Link color="inherit" href="https://youfarm.vercel.app/">
-        YouFarm
-      </Link>{" "}
-      {new Date().getFullYear()}
-      {"."}
-    </Typography>
+    <>
+      <Typography
+        variant="body2"
+        color="text.secondary"
+        align="center"
+        {...props}
+      >
+        {"Copyright © "}
+        <Link color="inherit" href="https://youfarm.vercel.app/">
+          YouFarm
+        </Link>{" "}
+        {new Date().getFullYear()}
+        {"."}
+      </Typography>
+    </>
   );
 }
 
 const theme = createTheme();
 
-const getLatLong = () => {
-  return new Promise((resolve, reject) => {
-    navigator.geolocation.getCurrentPosition(resolve, reject);
-  });
-};
-
-const getPosition = async () => {
-  const position = await getLatLong();
-  return position;
-};
-
 export default function SignIn() {
-  const [position, setPosition] = React.useState({
-    latitude: 0,
-    longitude: 0,
-  });
-
-  useEffect(() => {
-    getPosition().then((position) => {
-      console.log(position);
-      setPosition({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      });
-    });
-  }, []);
-
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log("SIGNUP", {
-      username: data.get("username"),
+    console.log("SIGNIN", {
       password: data.get("password"),
       phone: data.get("phone"),
-      city: data.get("city"),
-      role: data.get("role"),
-      position: position,
     });
   };
 
   return (
     <ThemeProvider theme={theme}>
       <Head>
-        <title>YouFarm | Register</title>
+        <title>YouFarm | Login</title>
         <meta name="description" content="Register/ Signup for an account" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
@@ -100,7 +72,7 @@ export default function SignIn() {
             <LockOutlinedIcon />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Register
+            Login
           </Typography>
           <Box
             component="form"
@@ -112,12 +84,11 @@ export default function SignIn() {
               margin="normal"
               required
               fullWidth
-              id="username"
-              label="Name"
-              name="username"
-              autoComplete="email"
-              type="text"
-              autoFocus
+              id="phone"
+              label="Phone"
+              name="phone"
+              autoComplete="phone"
+              type="tel"
             />
             <TextField
               margin="normal"
@@ -129,50 +100,19 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
-            {/* Phone no. */}
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="phone"
-              label="Phone"
-              name="phone"
-              autoComplete="phone"
-              type="tel"
-            />
-            {/* City name */}
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              id="city"
-              label="City"
-              name="city"
-              autoComplete="city"
-              type="text"
-            />
-            <FormControlLabel
-              name="role"
-              control={<Checkbox value="farmer" color="primary" />}
-              label="Are you a farmer?"
-            />
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Register
+              Login
             </Button>
             <Grid container>
-              <Grid item xs>
-                <Link href="#" variant="body2">
-                  Forgot password?
-                </Link>
-              </Grid>
+              <Grid item xs />
               <Grid item>
-                <Link href="/signin" variant="body2">
-                  {"Already have an account? Sign In"}
+                <Link href="/signup" variant="body2">
+                  {"Don't have an account? Sign Up"}
                 </Link>
               </Grid>
             </Grid>
