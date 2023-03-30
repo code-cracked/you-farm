@@ -9,6 +9,7 @@ const {
   getDocs,
   query,
   where,
+  Timestamp,
 } = require("firebase/firestore/lite");
 
 const addUser = asyncHandler(async (req, res) => {
@@ -25,7 +26,7 @@ const addUser = asyncHandler(async (req, res) => {
         latitude,
         longitude,
       },
-      created_on: new Date(),
+      created_on: Timestamp.fromMillis(Date.parse(new Date())),
     };
     const userRef = collection(db, "users");
     const docRef = doc(db, "users", phone);
