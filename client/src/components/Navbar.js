@@ -15,7 +15,7 @@ import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 
 const pages = ["Weather", "Seeds", "Deals", "Rental"];
-const settings = [];
+const settings = ["Create a deal", "Create a rental"];
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
