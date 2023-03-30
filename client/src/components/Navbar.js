@@ -115,9 +115,8 @@ function Navbar() {
           </Typography>
           <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
             {pages.map((page) => (
-              <Link href={`/${page.toLowerCase()}`} legacyBehavior>
+              <Link href={`/${page.toLowerCase()}`} key={page} legacyBehavior>
                 <Button
-                  key={page}
                   onClick={(e) => {
                     e.preventDefault();
                     window.history.pushState({}, "", `/${page.toLowerCase()}`);
