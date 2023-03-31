@@ -1,9 +1,10 @@
 const express = require("express");
 
-const { createShow } = require("../controllers/rent");
+const { createShow, addRent } = require("../controllers/rent");
 const router = express.Router();
 
-router.route("/").get(createShow);
+router.route("/create").post(createShow);
+router.route("/").post(addRent);
 
 module.exports = {
   userRoutes: router,
