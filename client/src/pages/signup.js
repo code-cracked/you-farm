@@ -13,7 +13,6 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Head from "next/head";
-import { hiIN } from "@mui/material/locale";
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import { postUser } from "@/utils/users";

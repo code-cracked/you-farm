@@ -8,7 +8,6 @@ import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Head from "next/head";
-import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import { toast, Toaster } from "react-hot-toast";
 import Axios from "axios";
