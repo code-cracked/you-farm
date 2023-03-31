@@ -15,10 +15,12 @@ app.use(logHandler);
 
 const config = require("./config/index");
 const { getAllShows } = require("./controllers/bid");
+const { weatherRoutes } = require("./router/weather");
 
 app.use("/user", userRoutes);
 app.use("/bid", bidRoutes);
 app.use("/rent", rentRoutes);
+app.use("/weather",weatherRoutes);
 app.route("/deal").get(getAllShows);
 
 app.listen(config.port || 5000, () =>
