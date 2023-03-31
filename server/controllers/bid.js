@@ -160,7 +160,7 @@ const addBid = asyncHandler(async (req, res) => {
       res.status(200).send(dataRef);
     }
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send(error);
   }
 });
 
