@@ -11,6 +11,7 @@ import Head from "next/head";
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import { toast, Toaster } from "react-hot-toast";
+import Axios from "axios";
 
 function Copyright(props) {
   return (
@@ -35,10 +36,20 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Crop() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async(event) => {
     event.preventDefault();
-    const data = new FormData(event.currentTarget);
-
+    const datas = new FormData(event.currentTarget);
+    console.log(datas)
+    const {data}=await Axios.get('http://localhost:5000/user/7395879437')
+    console.log(data)
+    const lat = data[0].location.lat;
+    const lon = data[0].location.long
+    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=52e635d515f603126f9f17a31554fc92`)
+  .then(res => res.json())
+  .then(data => {
+    console.log(data);
+    const {temp, humidity } = data.main;
+  });
   };
 
   return (
@@ -101,6 +112,14 @@ export default function Crop() {
               id="ph"
               label="pH value of soil"
               name="ph"
+            />
+            <TextField
+              margin="normal"
+              required
+              fullWidth
+              id="rain"
+              label="Rainfall in mm"
+              name="rain"
             />
             <Button
               type="submit"
