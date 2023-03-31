@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(logHandler);
 
 const config = require("./config/index");
-const { createShow, getAllShows } = require("./controllers/bid");
+const { getAllShows } = require("./controllers/bid");
 
 app.use("/user", userRoutes);
 app.use("/bid", bidRoutes);
