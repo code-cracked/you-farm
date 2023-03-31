@@ -14,7 +14,7 @@ import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
 
-const pages = ["Weather", "Seeds", "Deals", "Rental"];
+const pages = ["Weather", "Crop", "Deals", "Rental"];
 const settings = ["Create a deal", "Create a rental"];
 
 function Navbar() {
