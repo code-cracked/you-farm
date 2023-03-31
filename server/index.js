@@ -4,7 +4,7 @@ require("dotenv").config();
 const cors = require("cors");
 const { userRoutes } = require("./router/user");
 const { bidRoutes } = require("./router/bid");
-const { rentRoutes } = require("./router/bid");
+const { rentRoutes } = require("./router/rent");
 const bodyParser = require("body-parser");
 const logHandler = require("./middleware/log");
 app.use(express.json());

@@ -7,5 +7,5 @@ router.route("/create").post(createShow);
 router.route("/").post(addRent);
 
 module.exports = {
-  userRoutes: router,
+  rentRoutes: router,
 };
