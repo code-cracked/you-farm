@@ -36,22 +36,36 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function Crop() {
+  const [cropRec, setCropRec] = React.useState(null);
+  var tempn, humidn;
   const handleSubmit = async(event) => {
     event.preventDefault();
-    const datas = new FormData(event.currentTarget);
-    console.log(datas)
+    const formData = new FormData(event.currentTarget);
+    const N = parseInt(formData.get("nitro"))
+    const P = parseInt(formData.get("phos"))
+    const K = parseInt(formData.get("potas"))
+    const pH = parseInt(formData.get("ph"))
+    const rain = parseInt(formData.get("rain"))
     const {data}=await Axios.get('http://localhost:5000/user/7395879437')
     console.log(data)
     const lat = data[0].location.lat;
     const lon = data[0].location.long
-    fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=52e635d515f603126f9f17a31554fc92`)
-  .then(res => res.json())
-  .then(data => {
-    console.log(data);
-    const {temp, humidity } = data.main;
-  });
-  };
+    await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&units=metric&appid=52e635d515f603126f9f17a31554fc92`)
+    .then(res => res.json())
+    .then(data => {
+      console.log(data);
+      const {temp, humidity } = data.main;
+      tempn = parseInt(temp);
+      humidn = parseInt(humidity);
+    });
 
+    const myData = {"N": N, "P": P, "K": K, "temperature": tempn, "humidity":humidn, "ph": pH, "rainfall": rain}
+    console.log(myData)
+    const {data:crop}=await Axios.post('http://127.0.0.1:4000/predict_api',myData)
+    console.log(crop)
+    const finCrop = crop.charAt(0).toUpperCase() + crop.slice(1)
+    setCropRec(finCrop)
+  }
   return (
     <ThemeProvider theme={theme}>
       <Head>
@@ -129,6 +143,11 @@ export default function Crop() {
             >
               Recommend crop
             </Button>
+            {cropRec &&
+              <Typography mt={2} component="h4" variant="h4">
+                Recommended Crop: {cropRec}
+              </Typography>
+            }
           </Box>
         </Box>
         <Copyright sx={{ mt: 8, mb: 4 }} />
