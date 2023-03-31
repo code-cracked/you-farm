@@ -4,6 +4,7 @@ require("dotenv").config();
 const cors = require("cors");
 const { userRoutes } = require("./router/user");
 const { bidRoutes } = require("./router/bid");
+const { rentRoutes } = require("./router/rent");
 const bodyParser = require("body-parser");
 const logHandler = require("./middleware/log");
 app.use(express.json());
@@ -13,10 +14,11 @@ app.use(bodyParser.json());
 app.use(logHandler);
 
 const config = require("./config/index");
-const { createShow, getAllShows } = require("./controllers/bid");
+const { getAllShows } = require("./controllers/bid");
 
 app.use("/user", userRoutes);
 app.use("/bid", bidRoutes);
+app.use("/rent", rentRoutes);
 app.route("/deal").get(getAllShows);
 
 app.listen(config.port || 5000, () =>
