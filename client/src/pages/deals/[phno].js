@@ -15,18 +15,18 @@ const { default: Link } = require("next/link");
 //   owner: "Daniel",
 // };
 
-const rows = [
-  { id: 1, name: "Hello", bid: "$ 200", distance: "2 km", phno: 98974592739 },
-  {
-    id: 2,
-    name: "Hello World",
-    bid: "$ 100",
-    distance: "2 km",
-    phno: 98974592739,
-  },
-  { id: 3, name: "Donkey", bid: "$ 120", distance: "2 km", phno: 98974592739 },
-  { id: 4, name: "Monkey", bid: "$ 250", distance: "2 km", phno: 98974592739 },
-];
+// const rows = [
+//   { id: 1, name: "Hello", bid: "$ 200", distance: "2 km", phno: 98974592739 },
+//   {
+//     id: 2,
+//     name: "Hello World",
+//     bid: "$ 100",
+//     distance: "2 km",
+//     phno: 98974592739,
+//   },
+//   { id: 3, name: "Donkey", bid: "$ 120", distance: "2 km", phno: 98974592739 },
+//   { id: 4, name: "Monkey", bid: "$ 250", distance: "2 km", phno: 98974592739 },
+// ];
 
 const columns = [
   { field: "name", headerName: "Name", flex: 0.3 },
@@ -71,7 +71,6 @@ const Deals = () => {
     };
     postBid(bid)
       .then((res) => {
-        
         if (res.status == 200) {
           setBidAmount(value);
           toast.success(`You have placed a bid of $ ${value}`);

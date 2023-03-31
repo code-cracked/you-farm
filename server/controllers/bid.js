@@ -64,6 +64,7 @@ const getUserBids = asyncHandler(async (req, res) => {
           return result;
         });
         docRef.bids = bidList;
+        docRef.id = doc.id;
         return docRef;
       })
     );
@@ -110,6 +111,7 @@ const getAllShows = asyncHandler(async (req, res) => {
           return result;
         });
         docRef.bids = bidList;
+        docRef.id = doc.id;
         return docRef;
       })
     );
