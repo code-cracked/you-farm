@@ -38,15 +38,29 @@ function Copyright(props) {
 
 const theme = createTheme();
 
-export default function SignIn() {
+export default function CreateDeal() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log("SIGNIN", {
-      cropname: data.get("cropname"),
-      quantity: data.get("quantity"),
-      closetime: data.get("closetime"),
-    });
+
+    const userData = JSON.parse(localStorage.getItem("userdata"));
+    fetch("http://localhost:5000/bid/create", {
+      method: "POST",
+      body: JSON.stringify({
+        name: data.get("cropname"),
+        quantity: data.get("quantity"),
+        phone: data.get("phone"),
+        end: data.get("end"),
+        phone: userData.phone,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data);
+      });
   };
 
   return (

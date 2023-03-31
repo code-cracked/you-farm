@@ -18,9 +18,9 @@ const createShow = asyncHandler(async (req, res) => {
     const { phone, name, quantity, end } = req.body;
     const bidShowRef = collection(db, "bidshows");
     const dataRef = {
-      closetime: Timestamp.fromMillis(Date.parse(Date())),
+      closetime: Timestamp.fromMillis(Date.parse(Date(end))),
       createdby: phone,
-      createdon: Timestamp.fromMillis(Date.parse(Date(end))),
+      createdon: Timestamp.fromMillis(Date.parse(Date())),
       name: name,
       quantity: quantity,
       bids: [],
