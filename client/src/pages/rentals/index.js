@@ -30,7 +30,7 @@ const DealsIndex = () => {
           console.log(deal);
           return (
             <li key={deal.toString()}>
-              <Link href={`/rentals/${deal.createdby}`}>{deal.name}</Link>
+              <Link href={`/rentals/${deal.id}`}>{deal.name}</Link>
             </li>
           );
         })}
