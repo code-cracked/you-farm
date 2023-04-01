@@ -16,24 +16,24 @@ export default function Home() {
   // }
   // getLocationWeather("London");
 
-  const { data: output } = Axios.get(
-    "http://localhost:5000/user/7395879437"
-  ).then();
+  // const { data: output } = await Axios.get(
+  //   "http://localhost:5000/user/7395879437"
+  // ).then();
 
-  console.log(output);
-
-  // const lat = data[0].location.lat;
-  // const lon = data[0].location.long
-  fetch(
-    `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=52e635d515f603126f9f17a31554fc92`
-  )
-    .then((res) => res.json())
-    .then((result) => {
-      console.log(result);
-      const { temp, humidity } = result.main;
-      let tempn = parseInt(temp);
-      let humidn = parseInt(humidity);
-    });
+  // console.log(output);
+  // const keys = Object.keys(output);
+  // const lat = output[keys][0].location.lat;
+  // const lon = output[keys][0].location.long;
+  // fetch(
+  //   `https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${lon}&units=metric&appid=52e635d515f603126f9f17a31554fc92`
+  // )
+  //   .then((res) => res.json())
+  //   .then((result) => {
+  //     console.log(result);
+  //     const { temp, humidity } = result.main;
+  //     let tempn = parseInt(temp);
+  //     let humidn = parseInt(humidity);
+  //   });
   const getData = async () => {
     await fetch(urlToFetch)
       .then((res) => res.json())
@@ -49,7 +49,7 @@ export default function Home() {
 
   return (
     <div>
-      {data !== null ? (
+      {data !== null && data.list !== undefined ? (
         <div>
           {data.list.map((obj) => {
             return <div>{JSON.stringify(obj.main)}</div>;
