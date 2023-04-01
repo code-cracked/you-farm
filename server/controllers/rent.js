@@ -9,12 +9,99 @@ const {
   getDocs,
   query,
   where,
+  updateDoc,
   Timestamp,
 } = require("firebase/firestore/lite");
+
+const getAllShows = asyncHandler(async (req, res) => {
+  const getrentData = async (rents, id) => {
+    const rentData = await Promise.all(
+      rents.map(async (val) => {
+        const temp = await getrent(val, id).then((result) => {
+          return result;
+        });
+        return temp;
+      })
+    );
+    return rentData;
+  };
+
+  const getrent = async (ref, id = "sampleId") => {
+    const docu = await getDoc(ref);
+    let temp = docu.data();
+    temp.rentId = id;
+    return temp;
+  };
+
+  const getAllrents = async (ref) => {
+    const query = await getDocs(ref);
+    console.log(query);
+    const rentData = await Promise.all(
+      query.docs.map(async (doc) => {
+        let docRef = await doc.data();
+        const rentList = await getrentData(docRef.rents, doc.id).then(
+          (result) => {
+            return result;
+          }
+        );
+        docRef.rents = rentList;
+        docRef.id = doc.id;
+        return docRef;
+      })
+    );
+    return rentData;
+  };
+
+  try {
+    const rentshowRef = collection(db, "rentshows");
+
+    const data = await getAllrents(rentshowRef);
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+const getDealById = asyncHandler(async (req, res) => {
+  const getrent = async (ref, id = "sampleId") => {
+    const docu = await getDoc(ref);
+    let temp = docu.data();
+    temp.rentId = id;
+    return temp;
+  };
+  const getrentData = async (rents, id) => {
+    const rentData = await Promise.all(
+      rents.map(async (val) => {
+        const temp = await getrent(val, id).then((result) => {
+          return result;
+        });
+        return temp;
+      })
+    );
+    return rentData;
+  };
+  try {
+    const { id } = req.params;
+    const docRef = doc(db, "rentshows", id);
+    const dealRef = await getDoc(docRef);
+    const deal = dealRef.data();
+    console.log(deal);
+    const rentList = await getrentData(deal.rents, deal.id).then((result) => {
+      return result;
+    });
+
+    deal.rents = rentList;
+    deal.id = id;
+    res.status(200).send(deal);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
 
 const createShow = asyncHandler(async (req, res) => {
   try {
     const { phone, name, quantity, end } = req.body;
+    console.log(phone);
     const rentShowRef = collection(db, "rentshows");
     const dataRef = {
       closetime: Timestamp.fromMillis(Date.parse(Date(end))),
@@ -29,6 +116,7 @@ const createShow = asyncHandler(async (req, res) => {
     dataRef.id = id;
     res.status(200).send(dataRef);
   } catch (err) {
+    console.log(err);
     res.status(400).send(err.message);
   }
 });
@@ -74,4 +162,6 @@ const addRent = asyncHandler(async (req, res) => {
 module.exports = {
   createShow,
   addRent,
+  getAllShows,
+  getDealById,
 };
