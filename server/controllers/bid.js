@@ -34,6 +34,42 @@ const createShow = asyncHandler(async (req, res) => {
   }
 });
 
+const getDealById = asyncHandler(async (req, res) => {
+  const getBid = async (ref, id = "sampleId") => {
+    const docu = await getDoc(ref);
+    let temp = docu.data();
+    temp.bidId = id;
+    return temp;
+  };
+  const getBidData = async (bids, id) => {
+    const bidData = await Promise.all(
+      bids.map(async (val) => {
+        const temp = await getBid(val, id).then((result) => {
+          return result;
+        });
+        return temp;
+      })
+    );
+    return bidData;
+  };
+  try {
+    const { id } = req.params;
+    const docRef = doc(db, "bidshows", id);
+    const dealRef = await getDoc(docRef);
+    const deal = dealRef.data();
+    console.log(deal);
+    const bidList = await getBidData(deal.bids, deal.id).then((result) => {
+      return result;
+    });
+
+    deal.bids = bidList;
+    deal.id = id;
+    res.status(200).send(deal);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
 const getUserBids = asyncHandler(async (req, res) => {
   const getBidData = async (bids, id) => {
     const bidData = await Promise.all(
@@ -64,6 +100,7 @@ const getUserBids = asyncHandler(async (req, res) => {
           return result;
         });
         docRef.bids = bidList;
+        docRef.id = doc.id;
         return docRef;
       })
     );
@@ -110,6 +147,7 @@ const getAllShows = asyncHandler(async (req, res) => {
           return result;
         });
         docRef.bids = bidList;
+        docRef.id = doc.id;
         return docRef;
       })
     );
@@ -160,7 +198,7 @@ const addBid = asyncHandler(async (req, res) => {
       res.status(200).send(dataRef);
     }
   } catch (error) {
-    res.status(400).send(error.message);
+    res.status(400).send(error);
   }
 });
 
@@ -201,4 +239,5 @@ module.exports = {
   getAllBids,
   getAllShows,
   getUserBids,
+  getDealById,
 };
