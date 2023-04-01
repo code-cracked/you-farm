@@ -16,10 +16,15 @@ app.use(logHandler);
 
 const config = require("./config/index");
 
+const { weatherRoutes } = require("./router/weather");
+
+
 app.use("/user", userRoutes);
 app.use("/bid", bidRoutes);
 app.use("/rent", rentRoutes);
 app.use("/deal", dealRoutes);
+app.use("/weather",weatherRoutes);
+
 
 app.listen(config.port || 5000, () =>
   console.log(`Up & Running on ${config.url}`)
