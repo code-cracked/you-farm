@@ -16,28 +16,35 @@ const { default: Link } = require("next/link");
 // };
 
 // const rows = [
-//   { id: 1, name: "Hello", bid: "$ 200", distance: "2 km", phno: 98974592739 },
+//   { id: 1, name: "Hello", bid: "$ 200", distance: "2 km", id: 98974592739 },
 //   {
 //     id: 2,
 //     name: "Hello World",
 //     bid: "$ 100",
 //     distance: "2 km",
-//     phno: 98974592739,
+//     id: 98974592739,
 //   },
-//   { id: 3, name: "Donkey", bid: "$ 120", distance: "2 km", phno: 98974592739 },
-//   { id: 4, name: "Monkey", bid: "$ 250", distance: "2 km", phno: 98974592739 },
+//   { id: 3, name: "Donkey", bid: "$ 120", distance: "2 km", id: 98974592739 },
+//   { id: 4, name: "Monkey", bid: "$ 250", distance: "2 km", id: 98974592739 },
 // ];
 
+// const columns = [
+//   { field: "name", headerName: "Name", flex: 0.3 },
+//   { field: "amount", headerName: "Bid", flex: 0.1 },
+//   { field: "createdon", headerName: "Date", flex: 0.4 },
+//   { field: "phone", headerName: "Phonenumber", flex: 0.2 },
+// ];
 const columns = [
+  { field: "id", headerName: "SI.NO", flex: 0.1 },
   { field: "name", headerName: "Name", flex: 0.3 },
-  { field: "amount", headerName: "Bid", flex: 0.1 },
-  { field: "createdon", headerName: "Date", flex: 0.4 },
-  { field: "phone", headerName: "Phonenumber", flex: 0.2 },
+  { field: "bid", headerName: "Bid", flex: 0.2 },
+  { field: "phone", headerName: "Phone", flex: 0.3 },
+  { field: "createdon", headerName: "Date", flex: 0.3 },
 ];
 
 const Deals = () => {
   const router = useRouter();
-  const { phno } = router.query;
+  const { id } = router.query;
 
   const [product, setProduct] = useState({
     name: "Loading...",
@@ -66,7 +73,7 @@ const Deals = () => {
     const bid = {
       amount: value,
       phone: userData["phone"],
-      id: phno,
+      id: id,
       name: userData["name"],
     };
     postBid(bid)
@@ -85,35 +92,35 @@ const Deals = () => {
       });
   };
 
-  // Get deal by id (phno)
+  // Get deal by id (id)
   useEffect(() => {
     const fetchData = async () => {
-      let res = await getDealById();
-      res = res.filter((item) => item.createdby == phno);
-      if (res.length > 0) {
-        setProduct(res[0]);
-      }
-    };
-    fetchData();
-  }, [phno]);
+      const data = await getDealById(id);
 
-  // Get bids of dealer
-  useEffect(() => {
-    const fetchData = async () => {
-      let res = await getBidsOfDealer(phno);
+      setProduct(data);
+      const { bids: res } = data;
+      let x = [];
       res.map((item, index) => {
+        let dic = {};
         item.createdon = new Date(
           item.createdon.seconds * 1000 + item.createdon.nanoseconds / 1000000
         ).toUTCString();
-        item.id = index + 1;
-        item.amount = `$ ${item.amount}`;
+        // item.id = index + 1;
+        // item.amount = `$ ${item.amount}`;
+        dic.id = index + 1;
+        dic.name = item.name;
+        dic.bid = `$ ${item.amount}`;
+        dic.phone = item.phone;
+        dic.createdon = item.createdon;
+        x = [...x, dic];
       });
+      console.log(x);
       if (res.length > 0) {
-        setBids(res);
+        setBids(x);
       }
     };
-    fetchData();
-  }, [phno]);
+    if (id !== undefined) fetchData();
+  }, [id]);
 
   return (
     <>
