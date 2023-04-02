@@ -9,8 +9,8 @@ export const getAllDeals = () => {
 };
 
 // Get deal by id from localhost:5000/deal/
-export const getDealById = () => {
-  return fetch(`http://localhost:5000/deal/`, {
+export const getDealById = async (id) => {
+  return await fetch(`http://localhost:5000/deal/${id}`, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
