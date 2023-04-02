@@ -7,21 +7,6 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { getDealById, postRent } from "@/utils/rents";
 import { Toaster, toast } from "react-hot-toast";
-const product = {
-  title: "Sickle",
-  quantity: "2",
-  close_time: "2 days",
-  owner: "Daniel",
-  rate: "$2 / week",
-};
-
-// const rows = [
-//   // Generate random data
-//   { id: 1, name: "John", distance: "2 km", phno: "1234567890" },
-//   { id: 2, name: "Doe", distance: "5 km", phno: "2238792387" },
-//   { id: 3, name: "Tyson", distance: "6 km", phno: "2238792323" },
-//   { id: 4, name: "Mike", distance: "7 km", phno: "2238792396" },
-// ];
 
 const columns = [
   { field: "id", headerName: "SI.NO", flex: 0.1 },
@@ -38,6 +23,12 @@ const Deals = () => {
   const [open, setOpen] = useState(false);
   const [hasBid, setHasBid] = useState(false);
   const [bidAmount, setBidAmount] = useState(0);
+  const [product, setProduct] = useState({
+    name: "Loading...",
+    createdby: "Loading...",
+    closetime: "Loading...",
+    quantity: "Loading...",
+  });
   const handleClickOpen = () => {
     if (hasBid)
       toast(`You have already placed a bid of $${bidAmount} for this product`, {
@@ -72,7 +63,9 @@ const Deals = () => {
   };
   useEffect(() => {
     const fetchData = async () => {
-      let { rents: res } = await getDealById(id);
+      const data = await getDealById(id);
+      setProduct(data);
+      const { rents: res } = data;
       let x = [];
       res.map((item, index) => {
         let dic = {};
@@ -110,8 +103,8 @@ const Deals = () => {
             <Typography variant="subtitle2" color={"GrayText"}>
               # {id}
             </Typography>
-            <Typography variant="h3">{product.title}</Typography>
-            <Typography>By {product.owner}</Typography>
+            <Typography variant="h3">{product.name}</Typography>
+            <Typography>By {product.createdby}</Typography>
           </Stack>
           <Stack
             direction={"row"}
@@ -119,7 +112,7 @@ const Deals = () => {
             alignItems={"center"}
           >
             <Typography variant="h5">{product.quantity} units</Typography>
-            <Typography variant="h6">Closes in {product.close_time}</Typography>
+            <Typography variant="h6">Closes in {product.closetime}</Typography>
             <div>
               <Button variant="contained" onClick={handleClickOpen}>
                 Bid
