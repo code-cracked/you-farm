@@ -15,15 +15,19 @@ const {
 
 const getAllShows = asyncHandler(async (req, res) => {
   const getrentData = async (rents, id) => {
+    let highbid = 0;
     const rentData = await Promise.all(
       rents.map(async (val) => {
         const temp = await getrent(val, id).then((result) => {
+          if (parseInt(result.amount) > highbid)
+            highbid = parseInt(result.amount);
           return result;
         });
         return temp;
       })
     );
-    return rentData;
+
+    return [highbid, rentData];
   };
 
   const getrent = async (ref, id = "sampleId") => {
@@ -44,7 +48,8 @@ const getAllShows = asyncHandler(async (req, res) => {
             return result;
           }
         );
-        docRef.rents = rentList;
+        docRef.rents = rentList[1];
+        docRef.highbid = rentList[0];
         docRef.id = doc.id;
         return docRef;
       })
@@ -63,6 +68,7 @@ const getAllShows = asyncHandler(async (req, res) => {
 });
 
 const getDealById = asyncHandler(async (req, res) => {
+  let highbid = 0;
   const getrent = async (ref, id = "sampleId") => {
     const docu = await getDoc(ref);
     let temp = docu.data();
@@ -73,6 +79,8 @@ const getDealById = asyncHandler(async (req, res) => {
     const rentData = await Promise.all(
       rents.map(async (val) => {
         const temp = await getrent(val, id).then((result) => {
+          if (parseInt(result.amount) > highbid)
+            highbid = parseInt(result.amount);
           return result;
         });
         return temp;
@@ -91,6 +99,7 @@ const getDealById = asyncHandler(async (req, res) => {
     });
 
     deal.rents = rentList;
+    deal.highbid = highbid;
     deal.id = id;
     res.status(200).send(deal);
   } catch (error) {
