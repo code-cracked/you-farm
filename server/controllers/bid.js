@@ -76,15 +76,17 @@ const getDealById = asyncHandler(async (req, res) => {
 
 const getUserBids = asyncHandler(async (req, res) => {
   const getBidData = async (bids, id) => {
+    let max = 0;
     const bidData = await Promise.all(
       bids.map(async (val) => {
         const temp = await getBid(val, id).then((result) => {
           return result;
         });
+        if (parseInt(temp.amount) > max) max = parseInt(temp.amount);
         return temp;
       })
     );
-    return bidData;
+    return [max, bidData];
   };
 
   const getBid = async (ref, id = "sampleId") => {
@@ -96,14 +98,15 @@ const getUserBids = asyncHandler(async (req, res) => {
 
   const getAllBids = async (ref) => {
     const query = await getDocs(ref);
-    console.log(query);
+    // console.log(query);
     const bidData = await Promise.all(
       query.docs.map(async (doc) => {
         let docRef = await doc.data();
         const bidList = await getBidData(docRef.bids, doc.id).then((result) => {
           return result;
         });
-        docRef.bids = bidList;
+        docRef.bids = bidList[1];
+        docRef.highbid = bidList[0];
         docRef.id = doc.id;
         return docRef;
       })
@@ -150,7 +153,7 @@ const getAllShows = asyncHandler(async (req, res) => {
 
   const getAllBids = async (ref) => {
     const query = await getDocs(ref);
-    console.log(query);
+    // console.log(query);
     const bidData = await Promise.all(
       query.docs.map(async (doc) => {
         let docRef = await doc.data();
