@@ -14,14 +14,7 @@ import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Grid } from "@mui/material";
 
 const DealsIndex = () => {
-  const [data, setData] = useState([
- 
-  ]);
-  const getDate=(seconds) => {
-    let x=new Date(0);
-    x.setUTCDate(seconds)
-    return x.toDateString()
-  }
+  const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
       const res = await getAllDeals();
@@ -99,16 +92,13 @@ const DealsIndex = () => {
                 Available Till  :
               </Grid>
               <Grid item xs={6}>
-                {
-                  Date(deal.closetime.seconds*1000)
-                }
+                {new Date(deal.closetime.seconds*1000).toLocaleString()}
               </Grid>
             </Grid>
             <Button variant="contained" href={`/deals/${deal.id}`} >
               View Deal
               <OpenInNewIcon fontSize="small" />
             </Button>
-            {/* <Link href={`/deals/${deal.id}`}>{deal.name}</Link> */}
           </Box>
         );
       })}
