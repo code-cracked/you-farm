@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "cd server && yarn install && cd ../client && yarn install && yarn run build && cd ../model && pip install -r requirement.txt",
+    "build": "yarn && cd server && yarn  && cd ../client && yarn  && yarn run build && cd ../model && pip install -r requirement.txt",
     "server": "npm run dev --prefix server",
     "client": "npm run dev --prefix client",
     "model": "cd model && python app.py --prefix model",
