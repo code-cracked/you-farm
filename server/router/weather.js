@@ -6,8 +6,20 @@ const Axios =require("axios")
 const getDaysWeather = (list) => {
 	let result = [];
 	list.map((day, index) => {
-		if (index%8 === 0)
-		result.push(day.weather[0]);
+		if (index%8 === 0){
+			let temp={}
+			temp.temp_max=day.main.temp_max;
+			temp.temp_min=day.main.temp_min;
+			temp.pressure=day.main.pressure
+			temp.speed=day.wind.speed 
+			temp.humidity=day.main.humidity 
+			temp.temp=day.main.temp
+			temp.date=Date(day.dt_txt)
+			temp.weather=day.weather[0]
+			result.push(temp);
+
+		}
+		
 	});
 	return result;
 }

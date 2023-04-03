@@ -23,7 +23,8 @@
     "next": "13.2.4",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hot-toast": "^2.4.0"
+    "react-hot-toast": "^2.4.0",
+    "react-material-ui-theme": "^1.0.9"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
