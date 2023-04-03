@@ -13,17 +13,19 @@ const {
   Timestamp,
 } = require("firebase/firestore/lite");
 
-const getAllShows = asyncHandler(async (req, res) => {
+const getUserrents = asyncHandler(async (req, res) => {
   const getrentData = async (rents, id) => {
+    let max = 0;
     const rentData = await Promise.all(
       rents.map(async (val) => {
         const temp = await getrent(val, id).then((result) => {
           return result;
         });
+        if (parseInt(temp.amount) > max) max = parseInt(temp.amount);
         return temp;
       })
     );
-    return rentData;
+    return [max, rentData];
   };
 
   const getrent = async (ref, id = "sampleId") => {
@@ -35,7 +37,7 @@ const getAllShows = asyncHandler(async (req, res) => {
 
   const getAllrents = async (ref) => {
     const query = await getDocs(ref);
-    console.log(query);
+    // console.log(query);
     const rentData = await Promise.all(
       query.docs.map(async (doc) => {
         let docRef = await doc.data();
@@ -44,7 +46,62 @@ const getAllShows = asyncHandler(async (req, res) => {
             return result;
           }
         );
-        docRef.rents = rentList;
+        docRef.rents = rentList[1];
+        docRef.highbid = rentList[0];
+        docRef.id = doc.id;
+        return docRef;
+      })
+    );
+    return rentData;
+  };
+
+  try {
+    const rentShowRef = collection(db, "rentshows");
+    const q = query(rentShowRef, where("createdby", "==", req.params.phone));
+    const data = await getAllrents(q);
+    res.status(200).send(data);
+  } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+const getAllShows = asyncHandler(async (req, res) => {
+  const getrentData = async (rents, id) => {
+    let highrent = 0;
+    const rentData = await Promise.all(
+      rents.map(async (val) => {
+        const temp = await getrent(val, id).then((result) => {
+          if (parseInt(result.amount) > highrent)
+            highrent = parseInt(result.amount);
+          return result;
+        });
+        return temp;
+      })
+    );
+
+    return [highrent, rentData];
+  };
+
+  const getrent = async (ref, id = "sampleId") => {
+    const docu = await getDoc(ref);
+    let temp = docu.data();
+    temp.rentId = id;
+    return temp;
+  };
+
+  const getAllrents = async (ref) => {
+    const query = await getDocs(ref);
+    // console.log(query);
+    const rentData = await Promise.all(
+      query.docs.map(async (doc) => {
+        let docRef = await doc.data();
+        const rentList = await getrentData(docRef.rents, doc.id).then(
+          (result) => {
+            return result;
+          }
+        );
+        docRef.rents = rentList[1];
+        docRef.highrent = rentList[0];
         docRef.id = doc.id;
         return docRef;
       })
@@ -63,6 +120,7 @@ const getAllShows = asyncHandler(async (req, res) => {
 });
 
 const getDealById = asyncHandler(async (req, res) => {
+  let highrent = 0;
   const getrent = async (ref, id = "sampleId") => {
     const docu = await getDoc(ref);
     let temp = docu.data();
@@ -73,6 +131,8 @@ const getDealById = asyncHandler(async (req, res) => {
     const rentData = await Promise.all(
       rents.map(async (val) => {
         const temp = await getrent(val, id).then((result) => {
+          if (parseInt(result.amount) > highrent)
+            highrent = parseInt(result.amount);
           return result;
         });
         return temp;
@@ -85,12 +145,13 @@ const getDealById = asyncHandler(async (req, res) => {
     const docRef = doc(db, "rentshows", id);
     const dealRef = await getDoc(docRef);
     const deal = dealRef.data();
-    console.log(deal);
+    // console.log(deal);
     const rentList = await getrentData(deal.rents, deal.id).then((result) => {
       return result;
     });
 
     deal.rents = rentList;
+    deal.highrent = highrent;
     deal.id = id;
     res.status(200).send(deal);
   } catch (error) {
@@ -101,7 +162,7 @@ const getDealById = asyncHandler(async (req, res) => {
 const createShow = asyncHandler(async (req, res) => {
   try {
     const { phone, name, quantity, end } = req.body;
-    console.log(phone);
+    // console.log(phone);
     const rentShowRef = collection(db, "rentshows");
     const dataRef = {
       closetime: Timestamp.fromMillis(Date.parse(Date(end))),
@@ -164,4 +225,5 @@ module.exports = {
   addRent,
   getAllShows,
   getDealById,
+  getUserrents,
 };
