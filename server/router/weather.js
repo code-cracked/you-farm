@@ -1,8 +1,7 @@
 const express = require('express');
 const router = express.Router();
-// const fetch = require('fetch');
 const Axios =require("axios")
-// import {fetch} from "node-fetch";
+
 
 const getDaysWeather = (list) => {
 	let result = [];

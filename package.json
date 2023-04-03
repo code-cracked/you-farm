@@ -20,5 +20,10 @@
   "bugs": {
     "url": "https://github.com/code-cracked/you-farm/issues"
   },
-  "homepage": "https://github.com/code-cracked/you-farm#readme"
+  "homepage": "https://github.com/code-cracked/you-farm#readme",
+  "dependencies": {
+    "@emotion/react": "^11.10.6",
+    "@emotion/styled": "^11.10.6",
+    "@mui/material": "^5.11.15"
+  }
 }
