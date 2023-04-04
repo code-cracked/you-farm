@@ -16,10 +16,9 @@ const getDaysWeather = (list) => {
 			temp.speed=day.wind.speed 
 			temp.humidity=day.main.humidity 
 			temp.temp=day.main.temp
-			temp.date=new Date(day.dt_txt)
+			temp.date=new Date(day.dt_txt).toLocaleString()
 			temp.weather=day.weather[0]
 			result.push(temp);
-
 		}
 		
 	});
@@ -36,7 +35,7 @@ router.route('/').get(async(req, res) => {
 	const {data}=await Axios.get(`https://api.openweathermap.org/data/2.5/forecast?lat=${lat}&lon=${long}&units=metric&appid=${APIKEY}`)
 		// .then(response => response.json())
 	
-	console.log(data.list)
+	// console.log(data.list)
     res.send(getDaysWeather(data.list));
 });
 

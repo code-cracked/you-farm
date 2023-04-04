@@ -1,13 +1,13 @@
 import Head from "next/head";
+import Navbar from "@/components/Navbar";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import * as React from 'react';
-import Box from "@material-ui/core/Box";
-import Card from "@material-ui/core/Card";
-import { makeStyles } from "@material-ui/core/styles";
-import CardContent from "@material-ui/core/CardContent";
-import CardHeader from '@material-ui/core/CardHeader';
-import Typography from "@material-ui/core/Typography";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardContent from "@mui/material/CardContent";
+import CardHeader from '@mui/material/CardHeader';
+import Typography from "@mui/material/Typography";
 import { Grid } from "@mui/material";
 
 // import bgImg from "./images/bg-img.jpg";
@@ -29,16 +29,16 @@ export default function Home() {
      await axios.get(urlToFetch).then((res) => {
         // console.log(res.data)
         setData(res.data);
-        console.log(data)
+        console.log(res.data)
         
       })
    };
     getData();
   }, []);
 
- 
-
-  const classes = makeStyles((theme) => ({
+  
+  return (
+<div sx={{
     root: {
       marginTop: 50,
       display: "flex",
@@ -46,15 +46,11 @@ export default function Home() {
       height: 250,
     },
     cardcss: {
-      backgroundImage: "url(" + bgImg + ")",
+      // backgroundImage: "url(" + bgImg + ")",
       backgroundPosition: "center",
     },
-  }));
-
-
-  
-  return (
-<div className={classes.root}>
+  }}>
+    <Navbar />
       <CardHeader
          title={'Weather forecast'}
          style={{textAlign:'center',paddingBottom:'10%'}}
@@ -68,7 +64,8 @@ export default function Home() {
           alignItems="flex-start"
             >
                 {data.map(elem => (
-                    <Grid item xs={5} sm={5} md={5} key={data.indexOf(elem)}>
+                  console.log(elem.date),
+                    <Grid item xs={5} sm={5} md={5} key={data.indexOf(elem)} maxWidth={200}>
                         <Card>
                             <CardHeader
                                 title={`Day : ${new Date(elem.date).toLocaleString()}`}
