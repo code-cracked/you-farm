@@ -23,6 +23,7 @@ const DealsIndex = () => {
     };
     fetchData();
   }, []);
+
   const theme = createTheme();
 
   return (
@@ -38,7 +39,7 @@ const DealsIndex = () => {
         component="h1"
         variant="h3"
         paddingLeft={5}
-        paddingTop={1}
+        paddingY={1}
         fontWeight={theme.typography.fontWeightBold}
       >
         Deals
@@ -47,10 +48,9 @@ const DealsIndex = () => {
         <CssBaseline />
         <Box
           sx={{
-            marginTop: 1,
             display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
+            flexDirection: "row",
+            marginTop: 1,
           }}
         >
           <Button
@@ -70,6 +70,9 @@ const DealsIndex = () => {
           display: "flex",
           flexDirection: "row",
           marginTop: 1,
+          flexShrink: 0,
+          flexWrap: "wrap",
+          justifyContent: "center",
         }}
       >
         {data.length == 0
@@ -78,6 +81,8 @@ const DealsIndex = () => {
               console.log(deal);
               return (
                 <Box
+                  minWidth={200}
+                  maxWidth={400}
                   margin={2}
                   boxShadow={5}
                   padding={2}
