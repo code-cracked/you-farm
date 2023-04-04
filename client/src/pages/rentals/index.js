@@ -1,21 +1,24 @@
 import Navbar from "@/components/Navbar";
 import { getAllDeals } from "@/utils/rents";
 import { useEffect, useState } from "react";
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Container from "@mui/material/Container";
+import Head from "next/head";
+import { createTheme, ThemeProvider } from "@mui/material/styles";
+import * as React from "react";
+import CssBaseline from "@mui/material/CssBaseline";
+import AddIcon from '@mui/icons-material/Add';
+import Typography from "@mui/material/Typography";
+import OpenInNewIcon from '@mui/icons-material/OpenInNew';
+import { Grid } from "@mui/material";
 
-const { default: Link } = require("next/link");
-
-const DealsIndex = () => {
-  const [data, setData] = useState([
-    {
-      name: "Loading...",
-      phno: "Loading...",
-    },
-  ]);
+const RentalsIndex = () => {
+  const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
       const res = await getAllDeals();
-      // console.log("Uhuhuhu", res);
       setData(res);
     };
     fetchData();
@@ -24,7 +27,7 @@ const DealsIndex = () => {
   return (
     <>
       <Navbar />
-      <Link href="/rentals/create">Create a deal</Link>
+      <Link href="/rentals/create">Create a rental</Link>
       <ul>
         {data.map((deal) => {
           console.log(deal);
@@ -39,4 +42,4 @@ const DealsIndex = () => {
   );
 };
 
-export default DealsIndex;
+export default RentalsIndex;
