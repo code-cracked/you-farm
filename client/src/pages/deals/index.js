@@ -50,13 +50,15 @@ const DealsIndex = () => {
           sx={{
             display: "flex",
             flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
             marginTop: 1,
           }}
         >
           <Button
             variant="contained"
             href="/deals/create"
-            sx={{ paddingY: 2, paddingX: 5 }}
+            sx={{ paddingY: 2, paddingX: 3 }}
           >
             <AddIcon fontSize="large" />
             Create a deal
