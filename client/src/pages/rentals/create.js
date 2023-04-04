@@ -15,6 +15,8 @@ import {
   MonetizationOnOutlined,
   NewReleasesOutlined,
 } from "@mui/icons-material";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/router";
 
 function Copyright(props) {
   return (
@@ -37,6 +39,8 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function CreateRental() {
+  const router = useRouter();
+
   const handleSubmit = async (event) => {
     event.preventDefault();
     const { phone } = JSON.parse(localStorage.getItem("userdata"));
@@ -48,6 +52,14 @@ export default function CreateRental() {
       end: data.get("duration"),
     });
     console.log(res);
+    if (res.id) {
+      toast.success("Deal created successfully");
+      setTimeout(() => {
+        router.push("/rentals");
+      }, 1000);
+    } else {
+      toast.error("Error creating deal");
+    }
   };
 
   return (

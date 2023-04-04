@@ -59,8 +59,18 @@ export const postRent = async (rent) => {
       return {
         status: res.status,
         message: res.statusText,
+        ok: false,
       };
     }
-    return res.json();
+    let data;
+    res.json().then((res) => {
+      data = res;
+    });
+    return {
+      status: res.status,
+      message: res.statusText,
+      ok: true,
+      data,
+    };
   });
 };
