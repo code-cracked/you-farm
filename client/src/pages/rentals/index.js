@@ -13,6 +13,8 @@ import Typography from "@mui/material/Typography";
 import OpenInNewIcon from '@mui/icons-material/OpenInNew';
 import { Grid } from "@mui/material";
 
+const { default: Link } = require("next/link");
+
 const RentalsIndex = () => {
   const [data, setData] = useState([]);
 
@@ -24,10 +26,36 @@ const RentalsIndex = () => {
     fetchData();
   }, []);
 
+  const theme = createTheme();
+
   return (
     <>
+      <Head>
+      <title>Deals</title>
+      <meta name="description" content="Deals for produce is shown here" />
+      <meta name="viewport" content="width=device-width, initial-scale=1" />
+      <link rel="icon" href="/favicon.ico" />
+      </Head>
       <Navbar />
-      <Link href="/rentals/create">Create a rental</Link>
+      <Typography component="h1" variant="h3" paddingLeft={5} paddingY={1} fontWeight={theme.typography.fontWeightBold}>
+        Rentals
+      </Typography>
+      <Container component="main" maxWidth="xs">
+        <CssBaseline />
+        <Box
+          sx={{
+            marginTop: 1,
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+          }}
+        >
+          <Button variant="contained" href="/rentals/create" sx={{ paddingY: 2, paddingX: 5 }}>
+            <AddIcon fontSize="large" />
+            Create a rental
+          </Button>
+        </Box>
+      </Container>
       <ul>
         {data.map((deal) => {
           console.log(deal);

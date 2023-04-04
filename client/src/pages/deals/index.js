@@ -23,6 +23,7 @@ const DealsIndex = () => {
     };
     fetchData();
   }, []);
+  
   const theme = createTheme();
 
   return (<ThemeProvider theme={theme}>
