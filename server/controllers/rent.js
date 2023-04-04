@@ -161,15 +161,19 @@ const getDealById = asyncHandler(async (req, res) => {
 
 const createShow = asyncHandler(async (req, res) => {
   try {
-    const { phone, name, quantity, end } = req.body;
-    // console.log(phone);
+    const { phone, name, quantity, end, baseprice } = req.body;
+    // end - days after which the show will close
+    const newDate = new Date();
+    newDate.setDate(newDate.getDate() + parseInt(end));
+
     const rentShowRef = collection(db, "rentshows");
     const dataRef = {
-      closetime: Timestamp.fromMillis(Date.parse(Date(end))),
+      closetime: new Date(newDate),
       createdby: phone,
-      createdon: Timestamp.fromMillis(Date.parse(Date())),
+      createdon: new Date(),
       name: name,
       quantity: quantity,
+      baseprice: parseInt(baseprice),
       rents: [],
     };
     let id = "";
