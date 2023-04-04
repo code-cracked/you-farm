@@ -13,6 +13,7 @@ import Tooltip from "@mui/material/Tooltip";
 import MenuItem from "@mui/material/MenuItem";
 import AdbIcon from "@mui/icons-material/Adb";
 import Link from "next/link";
+import { Toaster } from "react-hot-toast";
 
 const pages = ["Weather", "Crop", "Deals", "Rentals"];
 const settings = ["Create a deal", "Create a rental"];
@@ -38,6 +39,7 @@ function Navbar() {
 
   return (
     <AppBar position="static">
+      <Toaster position="bottom-right" />
       <Container maxWidth="xl">
         <Toolbar disableGutters>
           <AdbIcon sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
