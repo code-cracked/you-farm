@@ -6,29 +6,22 @@ import Box from "@material-ui/core/Box";
 import Card from "@material-ui/core/Card";
 import { makeStyles } from "@material-ui/core/styles";
 import CardContent from "@material-ui/core/CardContent";
-import TextField from "@material-ui/core/TextField";
+import CardHeader from '@material-ui/core/CardHeader';
 import Typography from "@material-ui/core/Typography";
+import { Grid } from "@mui/material";
+
 // import bgImg from "./images/bg-img.jpg";
 
 
 
 export default function Home() {
-  // const [data, setData] = useState({
-  //    "weathermain" : "",
-  //    "weatherdiscription":"",
-  //    "temp":"",
-  //  "pressure": "",
-  //    "humidity": "",
-  //    "wind": "",
-  //    "country": "",
-  //    "city" : ""
-  // });
 
   const [data,setData]=useState([])  
   const lat=1,lon=1
   const urlToFetch = `http://localhost:5000/weather?lat=${lat}&long=${lon}`;
 
   useEffect(() => {
+
     // const lon = window.localStorage.getItem('location.latitude');
     // const lan = window.localStorage.getItem('location.longitude');
 
@@ -45,7 +38,7 @@ export default function Home() {
 
  
 
-  const style = makeStyles((theme) => ({
+  const classes = makeStyles((theme) => ({
     root: {
       marginTop: 50,
       display: "flex",
@@ -59,21 +52,97 @@ export default function Home() {
   }));
 
 
-  // var weathermain = data.weather.main;
-  // var weatherdiscription = data.weather.description;
-  // var temp = data.main.temp;
-  // var pressure = data.main.pressure;
-  // var humidity = data.main.humidity;
-  // var wind = data.wind.speed;
-  // var country = data.sys.country;
-  // var city = data.name;
-  //https://anothertechs.com/programming/react/weather-app-using-react/
-  return (<div> 
-    { data.length==0?"":   data.map((obj) => {
-      return(
-    <div>
+  
+  return (
+<div className={classes.root}>
+      <CardHeader
+         title={'Weather forecast'}
+         style={{textAlign:'center',paddingBottom:'10%'}}
+      />
+     
+      <Grid
+          container
+          spacing={3}
+          direction="row"
+          justify="flex-start"
+          alignItems="flex-start"
+            >
+                {data.map(elem => (
+                    <Grid item xs={5} sm={5} md={5} key={data.indexOf(elem)}>
+                        <Card>
+                            <CardHeader
+                                title={`Day : ${new Date(elem.date).toLocaleString()}`}
+                                subheader={`lat : ${lat} lon: ${lon}`}
+                            />
+                            <CardContent>
+                            <Box display="flex" flexDirection="row-reverse">
+          <Box>
+            <Typography variant="h4" color="textPrimary">
+              Temp Max: {elem.temp_max}
+              <span>&#176;</span>
+              {"C"}
+            </Typography>
+            <Typography variant="h4" color="textPrimary">
+              Temp Min: {elem.temp_min}
+              <span>&#176;</span>
+              {"C"}
+            </Typography>
+          </Box>
+        </Box>
+      </CardContent>
+      <CardContent>
+        <Box display="flex" flexDirection="row-reverse">
+          <Box p={0}>
+            <Typography variant="h6" color="textSecondary">
+              {elem.weather.description}
+            </Typography>
+          </Box>
+        </Box>
+      </CardContent>
       <CardContent>
         <Box display="flex" flexDirection="row">
+          <Box p={1}>
+            <Typography variant="h6" color="textPrimary">
+              Humidity: {elem.humidity} %
+            </Typography>
+          </Box>
+          <Box p={1}>
+            <Typography variant="h6" color="textPrimary">
+              pressure: {elem.pressure} pa
+            </Typography>
+          </Box>
+          <Box p={1}>
+            <Typography variant="h6" color="textPrimary">
+              wind: {elem.speed} km/h
+            </Typography>
+          </Box>
+        </Box>
+                            </CardContent>
+                        </Card>
+                     </Grid>
+                ))}
+            </Grid>
+        </div>
+);
+  
+}
+{/* <div className={classes.root}> <Grid item xs={12} sm={6} md={3}>
+    <div>
+      <CardHeader
+       title="Weather for this week"
+       style= {{ textAlign: 'center' }}
+       titleStyle={{textAlign: 'center'}}
+      >
+      </CardHeader>
+    </div>
+    { data.length==0?"":   data.map((elem) => {
+      return(
+    <div  style={{paddingLeft: '20%'}}>
+   
+      <Card >
+      <CardContent>
+        <Box 
+        display="flex" flexDirection="column">
           <Box p={1}>
             <Typography variant="caption" color="textSecondary">
               {lon}, {lat}
@@ -85,12 +154,12 @@ export default function Home() {
         <Box display="flex" flexDirection="row-reverse">
           <Box p={0}>
             <Typography variant="h4" color="textPrimary">
-              Temp Max: {obj.temp_max}
+              Temp Max: {elem.temp_max}
               <span>&#176;</span>
               {"C"}
             </Typography>
             <Typography variant="h4" color="textPrimary">
-              Temp Min: {obj.temp_min}
+              Temp Min: {elem.temp_min}
               <span>&#176;</span>
               {"C"}
             </Typography>
@@ -101,7 +170,7 @@ export default function Home() {
         <Box display="flex" flexDirection="row-reverse">
           <Box p={0}>
             <Typography variant="h6" color="textSecondary">
-              {obj.weather.description}
+              {elem.weather.description}
             </Typography>
           </Box>
         </Box>
@@ -110,37 +179,20 @@ export default function Home() {
         <Box display="flex" flexDirection="row">
           <Box p={1}>
             <Typography variant="h6" color="textPrimary">
-              Humidity: {obj.humidity} %
+              Humidity: {elem.humidity} %
             </Typography>
           </Box>
           <Box p={1}>
             <Typography variant="h6" color="textPrimary">
-              pressure: {obj.pressure} pa
+              pressure: {elem.pressure} pa
             </Typography>
           </Box>
           <Box p={1}>
             <Typography variant="h6" color="textPrimary">
-              wind: {obj.speed} km/h
+              wind: {elem.speed} km/h
             </Typography>
           </Box>
         </Box>
-      </CardContent>
-    </div> )} )
-}</div>
-);
-  
-}
-//data==null?"":  data.map((obj) => {
-  //return(
-    //     <div>
-    //       <Card sm={{ maxWidth: 500 }}>
-    //           <CardActionArea>
-    //               <CardContent>
-    //                 <Typography variant="body2" color="text.secondary"> 
-    //                   {JSON.stringify(obj.main)}
-    //                 </Typography>
-    //               </CardContent> 
-    //             </CardActionArea>
-    //           </Card>
-    //     </div>
-    // )})  
+      </CardContent></Card>
+      </div> )} )
+}</Grid></div> */}
