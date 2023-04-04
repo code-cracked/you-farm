@@ -117,12 +117,12 @@ export default function Home() {
             </Typography>
           </Box>
         </Box>
-                            </CardContent>
-                        </Card>
-                     </Grid>
-                ))}
-            </Grid>
-        </div>
+      </CardContent>
+      </Card>
+      </Grid>
+     ))}
+   </Grid>
+  </div>
 );
   
 }
