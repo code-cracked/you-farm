@@ -14,6 +14,7 @@ import OpenInNewIcon from "@mui/icons-material/OpenInNew";
 import { Grid } from "@mui/material";
 
 const DealsIndex = () => {
+  const [role, setRole] = useState("buyer");
   const [data, setData] = useState([]);
   useEffect(() => {
     const fetchData = async () => {
@@ -21,6 +22,7 @@ const DealsIndex = () => {
       console.log("Uhuhuhu", res);
       setData(res);
     };
+    setRole(JSON.parse(window.localStorage.getItem("userdata"))["role"])
     fetchData();
   }, []);
 
@@ -44,27 +46,30 @@ const DealsIndex = () => {
       >
         Deals
       </Typography>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "center",
-            marginTop: 1,
-          }}
-        >
-          <Button
-            variant="contained"
-            href="/deals/create"
-            sx={{ paddingY: 2, paddingX: 3 }}
+      { role == "farmer" ? 
+        <Container component="main" maxWidth="xs">
+          <CssBaseline />
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "row",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 1,
+            }}
           >
-            <AddIcon fontSize="large" />
-            Create a deal
-          </Button>
-        </Box>
-      </Container>
+            <Button
+              variant="contained"
+              href="/deals/create"
+              sx={{ paddingY: 2, paddingX: 3 }}
+            >
+              <AddIcon fontSize="large" />
+              Create a deal
+            </Button>
+          </Box>
+        </Container>
+        : null
+      }
       <Container
         component="main"
         maxWidth="xl"
