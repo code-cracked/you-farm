@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
 const Axios =require("axios")
 
@@ -39,5 +39,5 @@ router.route('/').get(async(req, res) => {
 });
 
 module.exports = {
-	weatherRoutes:router
-}
+  weatherRoutes: router,
+};

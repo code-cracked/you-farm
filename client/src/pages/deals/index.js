@@ -23,6 +23,7 @@ const DealsIndex = () => {
     };
     fetchData();
   }, []);
+  
   const theme = createTheme();
 
   return (<ThemeProvider theme={theme}>
@@ -33,7 +34,7 @@ const DealsIndex = () => {
       <link rel="icon" href="/favicon.ico" />
     </Head>
     <Navbar />
-    <Typography component="h1" variant="h3" paddingLeft={5} paddingTop={1} fontWeight={theme.typography.fontWeightBold}>
+    <Typography component="h1" variant="h3" paddingLeft={5} paddingY={1} fontWeight={theme.typography.fontWeightBold}>
       Deals
     </Typography>
     <Container component="main" maxWidth="xs">
@@ -57,12 +58,15 @@ const DealsIndex = () => {
         display: "flex",
         flexDirection: "row",
         marginTop: 1,
+        flexShrink: 0,
+        flexWrap: "wrap",
+        justifyContent: "center"
       }}
     >
       {data.length==0?"":data.map((deal) => {
         console.log(deal);
         return (
-          <Box margin={2} boxShadow={5} padding={2} borderRadius={4} display={"flex"} flexDirection={"column"} justifyContent={"center"} >
+          <Box minWidth={200} maxWidth={400} margin={2} boxShadow={5} padding={2} borderRadius={4} display={"flex"} flexDirection={"column"} justifyContent={"center"} >
             <Grid container spacing={2}>
               <Grid item xs={6}>
                 Name  :
