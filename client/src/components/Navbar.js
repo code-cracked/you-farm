@@ -16,7 +16,12 @@ import Link from "next/link";
 import { Toaster } from "react-hot-toast";
 
 const pages = ["Weather", "Crop", "Deals", "Rentals"];
-const settings = ["Create a deal", "Create a rental"];
+const settings = ["Logout"];
+
+function logout() {
+  localStorage.clear();
+  window.location.href = "/signin";
+}
 
 function Navbar() {
   const [anchorElNav, setAnchorElNav] = React.useState(null);
@@ -138,7 +143,6 @@ function Navbar() {
               </Link>
             ))}
           </Box>
-
           <Box sx={{ flexGrow: 0 }}>
             <Tooltip title="Open settings">
               <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
@@ -160,6 +164,7 @@ function Navbar() {
               }}
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
+              onClick={logout}
             >
               {settings.map((setting) => (
                 <MenuItem key={setting} onClick={handleCloseUserMenu}>
