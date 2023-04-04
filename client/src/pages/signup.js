@@ -16,6 +16,8 @@ import Head from "next/head";
 import { useEffect } from "react";
 import Navbar from "@/components/Navbar";
 import { postUser } from "@/utils/users";
+import { toast } from "react-hot-toast";
+import { useRouter } from "next/router";
 
 function Copyright(props) {
   return (
@@ -49,6 +51,7 @@ const getPosition = async () => {
 };
 
 export default function SignIn() {
+  const router = useRouter();
   const [position, setPosition] = React.useState({
     latitude: 0,
     longitude: 0,
@@ -67,15 +70,23 @@ export default function SignIn() {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    // make async toast
     postUser({
       name: data.get("username"),
       password: data.get("password"),
       phone: data.get("phone"),
       address: data.get("city"),
-      role: data.get("role"),
+      role: data.get("role") ? "farmer" : "buyer",
       location: position,
     }).then((data) => {
       console.log(data);
+      if (!data.ok) toast.error("User already exists");
+      else {
+        toast("User created successfully", {
+          icon: "👏",
+        });
+        router.push("/signin");
+      }
     });
   };
 

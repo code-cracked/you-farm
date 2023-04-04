@@ -6,36 +6,8 @@ import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 import { Toaster, toast } from "react-hot-toast";
 
-const { default: Link } = require("next/link");
-
-// const product = {
-//   title: "Carrots",
-//   quantity: "2 kg",
-//   close_time: "2 days",
-//   owner: "Daniel",
-// };
-
-// const rows = [
-//   { id: 1, name: "Hello", bid: "$ 200", distance: "2 km", id: 98974592739 },
-//   {
-//     id: 2,
-//     name: "Hello World",
-//     bid: "$ 100",
-//     distance: "2 km",
-//     id: 98974592739,
-//   },
-//   { id: 3, name: "Donkey", bid: "$ 120", distance: "2 km", id: 98974592739 },
-//   { id: 4, name: "Monkey", bid: "$ 250", distance: "2 km", id: 98974592739 },
-// ];
-
-// const columns = [
-//   { field: "name", headerName: "Name", flex: 0.3 },
-//   { field: "amount", headerName: "Bid", flex: 0.1 },
-//   { field: "createdon", headerName: "Date", flex: 0.4 },
-//   { field: "phone", headerName: "Phonenumber", flex: 0.2 },
-// ];
 const columns = [
-  { field: "id", headerName: "SI.NO", flex: 0.1 },
+  { field: "id", headerName: "S.No.", flex: 0.1 },
   { field: "name", headerName: "Name", flex: 0.3 },
   { field: "bid", headerName: "Bid", flex: 0.2 },
   { field: "phone", headerName: "Phone", flex: 0.3 },
@@ -78,17 +50,27 @@ const Deals = () => {
     };
     postBid(bid)
       .then((res) => {
-        if (res.status == 200) {
-          setBidAmount(value);
+        console.log(res);
+        if (res.ok) {
           toast.success(`You have placed a bid of $ ${value}`);
+          setBidAmount(value);
           setHasBid(true);
         } else {
-          toast.error(`Error: ${res.status}`);
+          toast.error(`You have already placed a bid of $ ${value}`, {
+            icon: "🧐",
+            style: {
+              background: "#f55",
+              color: "#fff",
+            },
+          });
         }
+      })
+      .then((res) => {
+        router.reload();
       })
       .catch((err) => {
         toast.error(`Error: ${err}`);
-        console.log(err);
+        console.log("Error here!");
       });
   };
 

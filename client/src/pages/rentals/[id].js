@@ -9,11 +9,10 @@ import { getDealById, postRent } from "@/utils/rents";
 import { Toaster, toast } from "react-hot-toast";
 
 const columns = [
-  { field: "id", headerName: "SI.NO", flex: 0.1 },
+  { field: "id", headerName: "S.No.", flex: 0.1 },
   { field: "name", headerName: "Name", flex: 0.3 },
-  { field: "bid", headerName: "Bid", flex: 0.2 },
-  { field: "phone", headerName: "Phone", flex: 0.3 },
-  { field: "createdon", headerName: "Date", flex: 0.3 },
+  { field: "phone", headerName: "Phone", flex: 0.2 },
+  { field: "createdon", headerName: "Date", flex: 0.4 },
 ];
 
 const Deals = () => {
@@ -34,7 +33,7 @@ const Deals = () => {
       toast(`You have already placed a bid of $${bidAmount} for this product`, {
         icon: "🤔",
       });
-    else setOpen(true);
+    handleClose(1);
   };
 
   const handleClose = async (value) => {
@@ -48,22 +47,31 @@ const Deals = () => {
     };
     await postRent(bid)
       .then((res) => {
-        if (res.status == 200) {
+        console.log(res);
+        if (res.ok) {
           setBidAmount(value);
-          toast.success(`You have placed a bid of $ ${value}`);
+          toast.success(`You have placed a request!`);
           setHasBid(true);
         } else {
-          toast.error(`Error: ${res.status}`);
+          toast.error(`Error: ${res.message}`);
         }
       })
       .catch((err) => {
         toast.error(`Error: ${err}`);
-        console.log(err);
+        console.log("Error here");
       });
   };
+
   useEffect(() => {
     const fetchData = async () => {
       const data = await getDealById(id);
+      console.log(data);
+      data.createdon = new Date(
+        data.createdon.seconds * 1000 + data.createdon.nanoseconds / 1000000
+      ).toUTCString();
+      data.closetime = new Date(
+        data.closetime.seconds * 1000 + data.closetime.nanoseconds / 1000000
+      ).toUTCString();
       setProduct(data);
       const { rents: res } = data;
       let x = [];
@@ -100,9 +108,6 @@ const Deals = () => {
           paddingY={"2rem"}
         >
           <Stack>
-            <Typography variant="subtitle2" color={"GrayText"}>
-              # {id}
-            </Typography>
             <Typography variant="h3">{product.name}</Typography>
             <Typography>By {product.createdby}</Typography>
           </Stack>
@@ -112,7 +117,9 @@ const Deals = () => {
             alignItems={"center"}
           >
             <Typography variant="h5">{product.quantity} units</Typography>
-            <Typography variant="h6">Closes in {product.closetime}</Typography>
+            <Typography variant="body1">
+              Closes at {product.closetime}
+            </Typography>
             <div>
               <Button variant="contained" onClick={handleClickOpen}>
                 Bid
@@ -122,7 +129,7 @@ const Deals = () => {
           </Stack>
         </Stack>
         <Stack minHeight={"60vh"}>
-          <DataGrid columns={columns} rows={bids} />
+          <DataGrid columns={columns} rows={bids} hasBid={hasBid} />
         </Stack>
       </Container>
     </>
