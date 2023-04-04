@@ -48,8 +48,8 @@ export default function CreateDeal() {
       body: JSON.stringify({
         name: data.get("cropname"),
         quantity: data.get("quantity"),
-        phone: data.get("phone"),
-        end: data.get("end"),
+        // phone: data.get("phone"),
+        end: data.get("closetime"),
         phone: userData.phone,
       }),
       headers: {
@@ -125,13 +125,13 @@ export default function CreateDeal() {
               id="closetime"
               InputProps={{
                 startAdornment: (
-                  <InputAdornment position="start">Close time</InputAdornment>
+                  <InputAdornment position="start">No of days</InputAdornment>
                 ),
               }}
               // label="Close time"
               name="closetime"
               autoComplete="text"
-              type="datetime-local"
+              type="number"
             />
 
             <Button
