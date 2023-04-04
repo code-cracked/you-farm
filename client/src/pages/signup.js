@@ -72,7 +72,7 @@ export default function SignIn() {
       password: data.get("password"),
       phone: data.get("phone"),
       address: data.get("city"),
-      role: data.get("role"),
+      role: data.get("role") ? "farmer" : "buyer",
       location: position,
     }).then((data) => {
       console.log(data);
