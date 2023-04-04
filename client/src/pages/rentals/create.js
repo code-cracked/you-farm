@@ -5,7 +5,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import TextField from "@mui/material/TextField";
 import Link from "next/link";
 import Box from "@mui/material/Box";
-
+import { createDeal } from "@/utils/rents";
 import Typography from "@mui/material/Typography";
 import Container from "@mui/material/Container";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
@@ -37,14 +37,17 @@ function Copyright(props) {
 const theme = createTheme();
 
 export default function CreateRental() {
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
+    const { phone } = JSON.parse(localStorage.getItem("userdata"));
     const data = new FormData(event.currentTarget);
-    console.log("SIGNIN", {
-      itemname: data.get("itemname"),
-      units: data.get("units"),
-      duration: data.get("duration"),
+    const res = await createDeal({
+      phone,
+      name: data.get("itemname"),
+      quantity: data.get("units"),
+      end: data.get("duration"),
     });
+    console.log(res);
   };
 
   return (

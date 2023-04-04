@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-
+import Axios from "axios";
 export default function Home() {
   // const [data, setData] = useState(null);
   // const city = "madurai";

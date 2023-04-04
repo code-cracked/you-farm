@@ -11,6 +11,7 @@ const {
   where,
   Timestamp,
 } = require("firebase/firestore/lite");
+const Axios = require("axios");
 
 const addUser = asyncHandler(async (req, res) => {
   try {
@@ -38,7 +39,6 @@ const addUser = asyncHandler(async (req, res) => {
   }
 });
 
-//not
 const getAllUsers = asyncHandler(async (req, res) => {
   try {
     const querySnapshot = await getDocs(collection(db, "users"));
@@ -54,6 +54,33 @@ const getAllUsers = asyncHandler(async (req, res) => {
       res.status(200).send(users);
     }
   } catch (error) {
+    res.status(400).send(error.message);
+  }
+});
+
+const getAllUserDetails = asyncHandler(async (req, res) => {
+  const getFetchData = async (phone) => {
+    const { data: userDetails } = await Axios.get(
+      `http://localhost:5000/user/${phone}`
+    );
+    const { data: dealDetails } = await Axios.get(
+      `http://localhost:5000/bid/user/${phone}`
+    );
+    const { data: rentDetails } = await Axios.get(
+      `http://localhost:5000/rent/user/${phone}`
+    );
+    let temp = { user: userDetails[0], deal: dealDetails, rent: rentDetails };
+    console.log(temp);
+    return temp;
+  };
+
+  try {
+    const { phone } = req.params;
+    const result = await Promise.all([getFetchData(phone)]);
+    // console.log(result[0]);
+    res.status(200).json(result[0]);
+  } catch (error) {
+    // console.log(error);
     res.status(400).send(error.message);
   }
 });
@@ -129,4 +156,5 @@ module.exports = {
   updateUser,
   deleteUser,
   signIn,
+  getAllUserDetails,
 };
