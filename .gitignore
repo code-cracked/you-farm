@@ -48,3 +48,4 @@ client/yarn.lock
 client/yarn-error.log
 client/yarn.lock
 client/yarn-error.log
+package-lock.json
