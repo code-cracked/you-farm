@@ -122,7 +122,7 @@ const Deals = () => {
             </Typography>
             <div>
               <Button variant="contained" onClick={handleClickOpen}>
-                Bid
+                Request
               </Button>
               <BidsDialog hasBid={hasBid} open={open} onClose={handleClose} />
             </div>
